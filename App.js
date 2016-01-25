@@ -105,6 +105,9 @@ $(function() {
 	$('#squarebutton').click(function(){app.shapeFactory = function() {
 		return new Square();
 	};});
+	$('#linebutton').click(function(){app.shapeFactory = function() {
+		return new Line();
+	};});
 	$('#lineWidth').change(function(){app.setLineWidth($(this).val())});
 	$('#clearbutton').click(function(){app.clear()});
 	$('#color').change(function(){app.setColor($(this).val())});
