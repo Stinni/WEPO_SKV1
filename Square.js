@@ -6,6 +6,7 @@ var Square = Shape.extend({
 
 	draw: function(canvas) {
 		canvas.strokeStyle = this.color;
+		canvas.lineWidth = this.lineWidth;
 		canvas.strokeRect(this.pos.x, this.pos.y, this.size.x, this.size.y);
 		this.base(canvas);
 	},

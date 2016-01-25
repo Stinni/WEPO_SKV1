@@ -9,6 +9,7 @@ function App(canvasSelector) {
 		var shape = self.shapeFactory();
 		shape.pos = startPos;
 		shape.color = self.color;
+		shape.lineWidth = self.lineWidth;
 
 		shape.startDrawing(startPos,self.canvasContext);
 		startPos.log('drawing start');
@@ -73,6 +74,10 @@ function App(canvasSelector) {
 		self.color = color;
 	}
 
+	self.setLineWidth = function(lineWidth) {
+		self.lineWidth = lineWidth;
+	}
+
 	self.init = function() {
 		// Initialize App	
 		self.canvas = $(canvasSelector);
@@ -85,7 +90,8 @@ function App(canvasSelector) {
 		self.shapes = new Array();
 		
 		// Set defaults
-		self.color = '#000000';	
+		self.color = '#000000';
+		self.lineWidth = 1;
 		// TODO: Set sensible defaults ...
 	}
 	
@@ -99,6 +105,7 @@ $(function() {
 	$('#squarebutton').click(function(){app.shapeFactory = function() {
 		return new Square();
 	};});
+	$('#lineWidth').change(function(){app.setLineWidth($(this).val())});
 	$('#clearbutton').click(function(){app.clear()});
 	$('#color').change(function(){app.setColor($(this).val())});
 });
