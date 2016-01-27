@@ -3,6 +3,7 @@
 	<title>JS-Draw</title>
 	<style>
 		#toolbar {background-color:silver;}
+		#sidebar {background-color:gray;}
 		#canvas {border:1px solid blue;display:block;}
 	</style>
 	<script type="text/javascript" src="base.js"></script>
@@ -13,12 +14,17 @@
 	<script type="text/javascript" src="square.js"></script>
 	<script type="text/javascript" src="line.js"></script>	
 	<!-- Latest compiled and minified CSS -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"> -->
 </head>
 <body>	
 	<div id="toolbar">
 		<input type="radio" name="tool" id="squarebutton" value="square"></input><label for="squarebutton">Square</label>
 		<input type="radio" name="tool" id="linebutton" value="line"></input><label for="linebutton">Line</label>
+		<input type="button" name="clearbutton" id="clearbutton" value="Clear"></input>
+		<input type="button" name="undobutton" id="undobutton" value="Undo"></input>
+		<input type="button" name="redobutton" id="redobutton" value="Redo"></input>
+	</div>
+	<div id="sidebar">
 		<input type="color" name="color" id="color" value="#000000"></input>
 		<select id="lineWidth">
 			<option value="1" selected>1</option>
@@ -42,8 +48,9 @@
 			<option value="19">19</option>
 			<option value="20">20</option>
 		</select>
-		<input type="button" name="clearbutton" id="clearbutton" value="clear"></input>
 	</div>
-	<canvas id="canvas" height="500" width="500"></canvas>
+	<canvas id="canvas" height="500" width="600">
+		<p>Unfortunately, your browser is currently unsupported by our web application. We are sorry for the inconvenience.</p>
+	</canvas>
 </body>
 </html>

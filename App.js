@@ -31,6 +31,7 @@ function App(canvasSelector) {
 			pos.log('drawing stop')
 
 			self.shapes.push(shape);
+			self.shapesUndone = [];
 			shape.added(self.canvasContext);
 
 			// Remove drawing and drawingStop functions from the mouse events
@@ -67,9 +68,24 @@ function App(canvasSelector) {
 	
 	self.clear = function() {
 		self.shapes = [];
+		self.shapesUndone = [];
 		self.redraw();
 	}
 	
+	self.undo = function() {
+		if(self.shapes.length > 0) {
+			self.shapesUndone.push(self.shapes.pop());
+			self.redraw();
+		}
+	}
+
+	self.redo = function() {
+		if(self.shapesUndone.length > 0) {
+			self.shapes.push(self.shapesUndone.pop());
+			self.redraw();
+		}
+	}
+
 	self.setColor = function(color) {
 		self.color = color;
 	}
@@ -87,7 +103,8 @@ function App(canvasSelector) {
 		});
 		self.shapeFactory = null;
 		self.canvasContext = canvas.getContext("2d");
-		self.shapes = new Array();
+		self.shapes = [];
+		self.shapesUndone = [];
 		
 		// Set defaults
 		self.color = '#000000';
@@ -108,7 +125,9 @@ $(function() {
 	$('#linebutton').click(function(){app.shapeFactory = function() {
 		return new Line();
 	};});
-	$('#lineWidth').change(function(){app.setLineWidth($(this).val())});
 	$('#clearbutton').click(function(){app.clear()});
+	$('#undobutton').click(function(){app.undo()});
+	$('#redobutton').click(function(){app.redo()});
+	$('#lineWidth').change(function(){app.setLineWidth($(this).val())});
 	$('#color').change(function(){app.setColor($(this).val())});
 });
