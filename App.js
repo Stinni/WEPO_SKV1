@@ -101,7 +101,9 @@ function App(canvasSelector) {
 		self.canvas.on({
 			mousedown:self.mousedown
 		});
-		self.shapeFactory = null;
+		self.shapeFactory = function() {
+			return new Square();
+		}
 		self.canvasContext = canvas.getContext("2d");
 		self.shapes = [];
 		self.shapesUndone = [];

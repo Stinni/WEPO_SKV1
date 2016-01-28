@@ -2,12 +2,12 @@ var Line = Shape.extend({
 
 	constructor: function() {
 		this.base("Line");
+		this.size = new Point(10,10);
 	},
 
 	draw: function(canvas) {
 		canvas.strokeStyle = this.color;
 		canvas.lineWidth = this.lineWidth;
-		//canvas.strokeRect(this.pos.x, this.pos.y, this.size.x, this.size.y);
 		canvas.beginPath();
 		canvas.moveTo(this.pos.x, this.pos.y);
 		canvas.lineTo(this.size.x, this.size.y);
