@@ -11,6 +11,7 @@
 	<script type="text/javascript" src="app.js"></script>
 	<script type="text/javascript" src="point.js"></script>
 	<script type="text/javascript" src="shape.js"></script>
+	<script type="text/javascript" src="pen.js"></script>
 	<script type="text/javascript" src="square.js"></script>
 	<script type="text/javascript" src="line.js"></script>	
 	<!-- Latest compiled and minified CSS -->
@@ -18,9 +19,10 @@
 </head>
 <body>	
 	<div id="toolbar">
-		<input type="radio" name="tool" id="squarebutton" value="square" checked="checked"></input><label for="squarebutton">Square</label>
+		<input type="radio" name="tool" id="penbutton" value="pen" checked="checked"></input><label for="penbutton">Pen</label>
+		<input type="radio" name="tool" id="squarebutton" value="square"></input><label for="squarebutton">Square</label>
 		<input type="radio" name="tool" id="linebutton" value="line"></input><label for="linebutton">Line</label>
-		<input type="button" name="clearbutton" id="clearbutton" value="Clear"></input>
+		<input type="button" name="clearbutton" id="clearbutton" value="Clear" title="This can be undone if you press Clear once. Press it twice and it's all gone!"></input>
 		<input type="button" name="undobutton" id="undobutton" value="Undo"></input>
 		<input type="button" name="redobutton" id="redobutton" value="Redo"></input>
 	</div>

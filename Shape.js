@@ -31,4 +31,8 @@ var Shape = Base.extend({
 	added: function(canvas) {
 
 	},
+
+	shouldBeAdded: function() {
+		return true;
+	}
 });

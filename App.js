@@ -30,8 +30,11 @@ function App(canvasSelector) {
 
 			pos.log('drawing stop')
 
-			self.shapes.push(shape);
+			if(shape.shouldBeAdded()) {
+				self.shapes.push(shape);				
+			}
 			self.shapesUndone = [];
+			self.wasCleared = 0;
 			shape.added(self.canvasContext);
 
 			// Remove drawing and drawingStop functions from the mouse events
@@ -55,7 +58,6 @@ function App(canvasSelector) {
 			self.drawingStart(e);
 		} else {
 		}
-
 		self.redraw();
 	}
 
@@ -67,20 +69,41 @@ function App(canvasSelector) {
 	}
 	
 	self.clear = function() {
-		self.shapes = [];
-		self.shapesUndone = [];
+		if(self.wasCleared > 0) {
+			self.wasCleared = 0;
+			self.shapes = [];
+			self.shapesUndone = [];
+		}
+		else {
+			self.wasCleared = self.shapes.length;
+			while(self.shapes.length > 0) {
+				self.shapesUndone.push(self.shapes.pop());
+			}
+		}
 		self.redraw();
 	}
 	
 	self.undo = function() {
-		if(self.shapes.length > 0) {
+		if(self.wasCleared > 0) {
+			for(var i = 0; i < self.wasCleared; i++) {
+				self.shapes.push(self.shapesUndone.pop());
+			}
+			self.wasCleared = 0;
+			self.redraw();
+		}
+		else if(self.shapes.length > 0) {
 			self.shapesUndone.push(self.shapes.pop());
 			self.redraw();
 		}
 	}
 
 	self.redo = function() {
-		if(self.shapesUndone.length > 0) {
+		if(self.wasCleared > 0) {
+			self.shapes.push(self.shapesUndone.pop());
+			self.wasCleared--;
+			self.redraw();
+		}
+		else if(self.shapesUndone.length > 0) {
 			self.shapes.push(self.shapesUndone.pop());
 			self.redraw();
 		}
@@ -102,11 +125,12 @@ function App(canvasSelector) {
 			mousedown:self.mousedown
 		});
 		self.shapeFactory = function() {
-			return new Square();
+			return new Pen();
 		}
 		self.canvasContext = canvas.getContext("2d");
 		self.shapes = [];
 		self.shapesUndone = [];
+		self.wasCleared = 0;
 		
 		// Set defaults
 		self.color = '#000000';
@@ -121,6 +145,9 @@ var app = null;
 $(function() {
 	// Wire up events
 	app = new App('#canvas');
+	$('#penbutton').click(function(){app.shapeFactory = function() {
+		return new Pen();
+	};});
 	$('#squarebutton').click(function(){app.shapeFactory = function() {
 		return new Square();
 	};});

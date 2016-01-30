@@ -2,7 +2,6 @@ var Line = Shape.extend({
 
 	constructor: function() {
 		this.base("Line");
-		this.size = new Point(10,10);
 	},
 
 	draw: function(canvas) {
