@@ -6,7 +6,9 @@ var Line = Shape.extend({
 
 	draw: function(canvas) {
 		canvas.strokeStyle = this.color;
-		canvas.lineWidth = this.lineWidth;
+		canvas.lineWidth   = this.lineWidth;
+		canvas.lineJoin    = this.lineJoin;
+		canvas.lineCap     = this.lineCap;
 		canvas.beginPath();
 		canvas.moveTo(this.pos.x, this.pos.y);
 		canvas.lineTo(this.size.x, this.size.y);

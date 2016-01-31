@@ -7,8 +7,9 @@ var Pen = Shape.extend({
 
 	draw: function(canvas) {
 		canvas.strokeStyle = this.color;
-		canvas.lineWidth = this.lineWidth;
-		canvas.lineJoin = canvas.lineCap = 'round';
+		canvas.lineWidth   = this.lineWidth;
+		canvas.lineJoin    = this.lineJoin;
+		canvas.lineCap     = this.lineCap;
 		if(this.points.length > 1) {
 			var p1 = this.points[0];
 			var p2 = this.points[1]

@@ -4,12 +4,19 @@ function App(canvasSelector) {
 		return new Point(e.pageX - self.canvasOffset.x,e.pageY - self.canvasOffset.y);
 	}
 
-	self.drawingStart = function(e) {	
-		var startPos = self.getEventPoint(e);
-		var shape = self.shapeFactory();
-		shape.pos = startPos;
-		shape.color = self.color;
-		shape.lineWidth = self.lineWidth;
+	self.drawingStart = function(e) {
+		// moved the canvasOffset point initialization to here. The point often started at the wrong place,
+		// so the whole drawing was askew. Now it gets a new Point every time something's drawn so if the
+		// first shape drawn is in the wrong place (which hasn't happened yet) it's easy to just clear the
+		// canvas and start again.
+		self.canvasOffset = new Point(self.canvas.offset().left, self.canvas.offset().top);
+		var startPos      = self.getEventPoint(e);
+		var shape         = self.shapeFactory();
+		shape.pos         = startPos;
+		shape.color       = self.color;
+		shape.lineWidth   = self.lineWidth;
+		shape.lineJoin    = self.lineJoin;
+		shape.lineCap     = self.lineCap;
 
 		shape.startDrawing(startPos,self.canvasContext);
 		startPos.log('drawing start');
@@ -117,10 +124,18 @@ function App(canvasSelector) {
 		self.lineWidth = lineWidth;
 	}
 
+	self.setLineJoin = function(lineJoin) {
+		self.lineJoin = lineJoin;
+	}
+
+	self.setLineCap = function(lineCap) {
+		self.lineCap = lineCap;
+	}
+
 	self.init = function() {
 		// Initialize App	
 		self.canvas = $(canvasSelector);
-		self.canvasOffset = new Point(self.canvas.offset().left,self.canvas.offset().top);
+		self.canvasOffset = null;
 		self.canvas.on({
 			mousedown:self.mousedown
 		});
@@ -133,9 +148,10 @@ function App(canvasSelector) {
 		self.wasCleared = 0;
 		
 		// Set defaults
-		self.color = '#000000';
+		self.color     = '#000000';
 		self.lineWidth = 1;
-		// TODO: Set sensible defaults ...
+		self.lineJoin  = "miter";
+		self.lineCap   = "butt";
 	}
 	
 	self.init();
@@ -145,6 +161,7 @@ var app = null;
 $(function() {
 	// Wire up events
 	app = new App('#canvas');
+	$( "#tabs" ).tabs();
 	$('#penbutton').click(function(){app.shapeFactory = function() {
 		return new Pen();
 	};});
@@ -159,4 +176,6 @@ $(function() {
 	$('#redobutton').click(function(){app.redo()});
 	$('#lineWidth').change(function(){app.setLineWidth($(this).val())});
 	$('#color').change(function(){app.setColor($(this).val())});
+	$('#lineJoin').change(function(){app.setLineJoin($(this).val())});
+	$('#lineCap').change(function(){app.setLineCap($(this).val())});
 });
