@@ -2,6 +2,8 @@ var Circle = Shape.extend({
 
 	constructor: function() {
 		this.base("Circle");
+		this.radius = 0;
+		this.center = new Point(0,0);
 	},
 
 
@@ -10,35 +12,19 @@ var Circle = Shape.extend({
 		canvas.strokeStyle = this.color;
 		canvas.lineWidth = this.lineWidth;
 		
-		var radius = 0;
-
-		var px = this.pos.x;
-		var py = this.pos.y;
-
-		if(this.size.x > this.pos.x)
-		{
-			radius = Math.abs((this.size.x - this.pos.x)/2);
-			px = (this.size.x-this.pos.x)/2 + this.pos.x;
-		}
-		else//(this.size.y > this.pos.y)
-		{
-			radius = Math.abs((this.size.y - this.pos.y)/2);
-			py = (this.size.y-this.pos.y)/2 + this.pos.y;
-		}
-		
 		canvas.beginPath();
-		canvas.arc(px, py, radius, 2* Math.PI, false);
+		canvas.arc(this.center.x, this.center.y, this.radius, 2* Math.PI, false);
 		canvas.closePath();
 		canvas.stroke();
-		//this.base(canvas);
+		this.base(canvas);
 	},
 
 	drawing:function(point) {
-		this.size.x = point.x;
-		this.size.y = point.y;
-
-
-
+		this.center.x = Math.abs((this.pos.x + point.x)/2);
+		this.center.y = Math.abs((this.pos.y + point.y)/2);
+		var rx = Math.abs(this.center.x - point.x);
+		var ry = Math.abs(this.center.y - point.y);
+		this.radius = rx > ry ? rx : ry;
 	},
 
 	added: function(canvas) {
@@ -51,6 +37,5 @@ var Circle = Shape.extend({
 			this.pos.y += this.size.y;
 			this.size.y = Math.abs(this.size.y);
 		}
-	},	
-
+	}
 });
