@@ -35,6 +35,7 @@
 				<input type="radio" name="tool" id="penbutton" value="pen" checked="checked"></input><label for="penbutton">Pen</label>
 				<input type="radio" name="tool" id="squarebutton" value="square"></input><label for="squarebutton">Square</label>
 				<input type="radio" name="tool" id="linebutton" value="line"></input><label for="linebutton">Line</label>
+				<input type="radio" name="tool" id="textbutton" value="text"></input><label for="textbutton">Text</label>
 				<input type="button" name="clearbutton" id="clearbutton" class="btn btn-default" value="Clear" title="Be careful!!! This can only be undone if you press the button ONCE. If you press it twice, it's all gone." style="margin-left:10px;"></input>
 				<input type="button" name="undobutton" id="undobutton" class="btn btn-default" value="Undo"></input>
 				<input type="button" name="redobutton" id="redobutton" class="btn btn-default" value="Redo"></input>
@@ -46,6 +47,7 @@
 							<canvas class="centred" id="canvas" height="500" width="700">
 								<p>Unfortunately, your browser is currently unsupported by our web application. We are sorry for the inconvenience.</p>
 							</canvas>
+							<textarea id="textInput" hidden></textarea>
 						</div>
 						<div class="col-xs-6">
 							<div class="btn-group-vertical" role="group">

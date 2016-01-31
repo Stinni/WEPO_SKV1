@@ -171,6 +171,10 @@ $(function() {
 	$('#linebutton').click(function(){app.shapeFactory = function() {
 		return new Line();
 	};});
+	$('#textbutton').click(function(){app.shapeFactory = function() {
+		return new TextBox();};
+		$('#textInput').show().focus();
+	});
 	$('#clearbutton').click(function(){app.clear()});
 	$('#undobutton').click(function(){app.undo()});
 	$('#redobutton').click(function(){app.redo()});
