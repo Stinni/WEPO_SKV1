@@ -1,23 +1,34 @@
-var Line = Shape.extend({
+var Circle = Shape.extend({
 
 	constructor: function() {
-		this.base("Line");
+		this.base("Circle");
 	},
 
+
 	draw: function(canvas) {
+
 		canvas.strokeStyle = this.color;
 		canvas.lineWidth = this.lineWidth;
-		canvas.beginPath();
+		
+		var radius = 0;
 
-		// To prevent a line being drawn to point 0,0 when the mouse is clicked without being moved or a line is drawn outside the canvas
-		if(this.size.x === 0 && this.size.y === 0)
+		var px = this.pos.x;
+		var py = this.pos.y;
+
+		if(this.size.x > this.pos.x)
 		{
-			this.size.x = this.pos.x;
-			this.size.y = this.pos.y;
+			radius = Math.abs((this.size.x - this.pos.x)/2);
+			px = (this.size.x-this.pos.x)/2 + this.pos.x;
 		}
-
-		canvas.moveTo(this.pos.x, this.pos.y);
-		canvas.lineTo(this.size.x, this.size.y);
+		else//(this.size.y > this.pos.y)
+		{
+			radius = Math.abs((this.size.y - this.pos.y)/2);
+			py = (this.size.y-this.pos.y)/2 + this.pos.y;
+		}
+		
+		canvas.beginPath();
+		canvas.arc(px, py, radius, 2* Math.PI, false);
+		canvas.closePath();
 		canvas.stroke();
 		//this.base(canvas);
 	},
@@ -25,6 +36,9 @@ var Line = Shape.extend({
 	drawing:function(point) {
 		this.size.x = point.x;
 		this.size.y = point.y;
+
+
+
 	},
 
 	added: function(canvas) {

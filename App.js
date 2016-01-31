@@ -9,6 +9,7 @@ function App(canvasSelector) {
 		var shape = self.shapeFactory();
 		shape.pos = startPos;
 		shape.color = self.color;
+		shape.lineWidth = self.lineWidth;
 
 		shape.startDrawing(startPos,self.canvasContext);
 		startPos.log('drawing start');
@@ -49,10 +50,18 @@ function App(canvasSelector) {
 	}
 
 	self.mousedown = function(e) {
-		if(self.shapeFactory != null) {
-			self.drawingStart(e);
-		} else {
+		/*
+		if(t === 1)
+		{
+			$('#textbox').focus();
 		}
+		else
+		{*/
+			if(self.shapeFactory != null) {
+				self.drawingStart(e);
+			} else {
+			}
+		//}
 
 		self.redraw();
 	}
@@ -73,6 +82,10 @@ function App(canvasSelector) {
 		self.color = color;
 	}
 
+	self.setLineWidth = function(lineWidth) {
+		self.lineWidth = lineWidth;
+	}
+
 	self.init = function() {
 		// Initialize App	
 		self.canvas = $(canvasSelector);
@@ -85,13 +98,15 @@ function App(canvasSelector) {
 		self.shapes = new Array();
 		
 		// Set defaults
-		self.color = '#000000';	
+		self.color = '#000000';
+		self.lineWidth = 1;
 		// TODO: Set sensible defaults ...
 	}
 	
 	self.init();
 }
 
+var t = 0;
 var app = null;
 $(function() {
 	// Wire up events
@@ -99,12 +114,20 @@ $(function() {
 	$('#squarebutton').click(function(){app.shapeFactory = function() {
 		return new Square();
 	};});
-	$('#linebutton').click(function(){app.shapeFactory = function() {
-		return new Line();
+	
+	$('#textbutton').click(function(){app.shapeFactory = function() {
+		var t = 1;
+		return new Text();
 	};});
+	
+	$('#linebutton').click(function(){app.shapeFactory = function() {
+	return new Line();
+	};});
+
 	$('#circlebutton').click(function(){app.shapeFactory = function() {
 		return new Circle();
 	};});
+	$('#lineWidth').change(function(){app.setLineWidth($(this).val())});
 	$('#clearbutton').click(function(){app.clear()});
 	$('#color').change(function(){app.setColor($(this).val())});
 });
