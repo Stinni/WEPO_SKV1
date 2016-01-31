@@ -157,6 +157,7 @@ function App(canvasSelector) {
 	self.init();
 }
 
+var t = 0;
 var app = null;
 $(function() {
 	// Wire up events
@@ -168,8 +169,18 @@ $(function() {
 	$('#squarebutton').click(function(){app.shapeFactory = function() {
 		return new Square();
 	};});
+	
+	$('#textbutton').click(function(){app.shapeFactory = function() {
+		var t = 1;
+		return new Text();
+	};});
+	
 	$('#linebutton').click(function(){app.shapeFactory = function() {
-		return new Line();
+	return new Line();
+	};});
+
+	$('#circlebutton').click(function(){app.shapeFactory = function() {
+		return new Circle();
 	};});
 	$('#textbutton').click(function(){app.shapeFactory = function() {
 		return new TextBox();};
