@@ -6,6 +6,8 @@ var Pen = Shape.extend({
 	},
 
 	draw: function(canvas) {
+		// Got the idea for this from here:
+		// http://perfectionkills.com/exploring-canvas-drawing-techniques/
 		canvas.strokeStyle = this.color;
 		canvas.lineWidth   = this.lineWidth;
 		canvas.lineJoin    = this.lineJoin;
