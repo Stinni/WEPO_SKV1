@@ -20,29 +20,28 @@ function App(canvasSelector) {
 
 		shape.startDrawing(startPos,self.canvasContext);
 		startPos.log('drawing start');
-	
-		var drawing = function(e) {
-			var pos = self.getEventPoint(e);
-			
-			shape.drawing(pos,self.canvasContext);
 
-			self.redraw();
-			shape.draw(self.canvasContext);
+		var drawing = function(e) {
+			if(!self.isTextbox) {
+				var pos = self.getEventPoint(e);
+				
+				shape.drawing(pos,self.canvasContext);
+
+				self.redraw();
+				shape.draw(self.canvasContext);
+			}
 		}
 
 		var drawingStop = function(e) {
 			var pos = self.getEventPoint(e);
-
 			shape.stopDrawing(pos,self.canvasContext);
-
 			pos.log('drawing stop')
-
 			if(shape.shouldBeAdded()) {
-				self.shapes.push(shape);				
+				self.shapes.push(shape);
+				self.shapesUndone = [];
+				self.wasCleared = 0;
+				shape.added(self.canvasContext);
 			}
-			self.shapesUndone = [];
-			self.wasCleared = 0;
-			shape.added(self.canvasContext);
 
 			// Remove drawing and drawingStop functions from the mouse events
 			self.canvas.off({
@@ -61,10 +60,39 @@ function App(canvasSelector) {
 	}
 
 	self.mousedown = function(e) {
-		if(self.shapeFactory != null) {
-			self.drawingStart(e);
-		} else {
+		if(self.isTextbox) {
+			var x = pos.x + $("#canvas").position().left;
+			var y = pos.y + $("#canvas").position().top;
+			var textBox = document.getElementById("textInput");
+			textBox.style.display = 'flex';
+			$('#textInput').css({position:'absolute', 'left': x, 'top': y}).focus();
 		}
+		else if(self.shapeFactory != null) {
+			self.drawingStart(e);
+		}//textAreaContainer"></div> <textarea id="textInput" hidden></textarea>
+
+		self.redraw();
+	}
+
+	self.saveTextInput = function() {
+		self.canvasOffset = new Point(self.canvas.offset().left, self.canvas.offset().top);
+		var startPos      = self.getEventPoint(e);
+		var shape         = self.shapeFactory();
+		shape.pos         = startPos;
+		shape.color       = self.color;
+		shape.font        = self.font;
+		shape.theText     = $('#textInput').val();
+
+		if(shape.shouldBeAdded()) {
+			self.shapes.push(shape);
+			self.shapesUndone = [];
+			self.wasCleared = 0;
+			shape.added(self.canvasContext);
+		}
+
+		shape.startDrawing(startPos,self.canvasContext);
+		startPos.log('drawing start');
+
 		self.redraw();
 	}
 
@@ -75,7 +103,7 @@ function App(canvasSelector) {
 		}
 	}
 	
-	self.clear = function() {
+	self.clearCanvas = function() {
 		if(self.wasCleared > 0) {
 			self.wasCleared = 0;
 			self.shapes = [];
@@ -132,6 +160,16 @@ function App(canvasSelector) {
 		self.lineCap = lineCap;
 	}
 
+	self.setFont = function(font) {
+		var fontArgs = self.font.split(' ');
+		self.font = fontArgs[0] + ' ' + font;
+	}
+
+	self.setTextSize = function(size) {
+		var fontArgs = self.font.split(' ');
+		self.font = size + ' ' + fontArgs[1];
+	}
+
 	self.init = function() {
 		// Initialize App	
 		self.canvas = $(canvasSelector);
@@ -146,18 +184,19 @@ function App(canvasSelector) {
 		self.shapes = [];
 		self.shapesUndone = [];
 		self.wasCleared = 0;
+		self.isTextbox = false;
 		
 		// Set defaults
 		self.color     = '#000000';
 		self.lineWidth = 1;
 		self.lineJoin  = "miter";
 		self.lineCap   = "butt";
+		self.font      = '12pt Calibri';
 	}
 	
 	self.init();
 }
 
-var t = 0;
 var app = null;
 $(function() {
 	// Wire up events
@@ -165,28 +204,29 @@ $(function() {
 	$( "#tabs" ).tabs();
 	$('#penbutton').click(function(){app.shapeFactory = function() {
 		return new Pen();
+		app.isTextbox = false;
 	};});
 	$('#squarebutton').click(function(){app.shapeFactory = function() {
 		return new Square();
+		app.isTextbox = false;
 	};});
-	
-	$('#textbutton').click(function(){app.shapeFactory = function() {
-		var t = 1;
-		return new Text();
-	};});
-	
 	$('#linebutton').click(function(){app.shapeFactory = function() {
-	return new Line();
+		return new Line();
+		app.isTextbox = false;
 	};});
-
 	$('#circlebutton').click(function(){app.shapeFactory = function() {
 		return new Circle();
+		app.isTextbox = false;
 	};});
 	$('#textbutton').click(function(){app.shapeFactory = function() {
 		return new TextBox();};
-		$('#textInput').show().focus();
+		app.isTextbox = true;
 	});
-	$('#clearbutton').click(function(){app.clear()});
+	$('#textInput').onfocusout(function(){
+		app.saveTextInput();
+		$('#textInput').hide().clear();
+	});
+	$('#clearbutton').click(function(){app.clearCanvas()});
 	$('#undobutton').click(function(){app.undo()});
 	$('#redobutton').click(function(){app.redo()});
 	$('#lineWidth').change(function(){app.setLineWidth($(this).val())});
