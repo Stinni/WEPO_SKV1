@@ -7,6 +7,7 @@
 		#myHeader {background-color: #3a5795; color: white; padding: 16px; text-align: center;}
 		#toolbar {background-color:silver;}
 		#canvas {border:1px solid blue;}
+		.fix-right {padding-right: 10px;}
 		#myFooter {position: fixed; bottom: 0; width: 100%; background-color: #3a5795; color: white;}
 	</style>
 	<!-- JQuery -->
@@ -30,7 +31,7 @@
 		<h2 style="margin-left: 20px;">JavaScript Canvas Whiteboard<small></small></h1>
 	</div>
 	<div id="tabs">
-		<ul>
+		<ul> <!-- The idea is to be able to add more tabs (and therefore more canvases/drawings) so one can work on as many drawings as one wants. -->
 			<li><a href="#tabs-1">Drawing</a></li>
 			<li><a href="#tabs-2">About</a></li>
 		</ul>
@@ -108,7 +109,7 @@
 						<option value="52pt">52</option>
 						<option value="56pt">56</option>
 						<option value="60pt">60</option>
-					</select> -->
+					</select> --> <!-- Couldn't get the font and font size to work. Left here for future development. -->
 				</div>
 				<div class="pull-left" style="margin-right:30px;">
 					<canvas class="centred" id="canvas" height="500" width="700">
@@ -119,20 +120,40 @@
 			</div>
 		</div>
 		<div id="tabs-2">
-			<div class="well well-lg clearfix">
-				<h2>About the project development:</h2> <br />
-				<p></p>
-				<p></p>
-				<h2>Team members:</h2> <br />
-				<address>
-    				<strong>Email:</strong> <a href="mailto:kristinnf13@ru.is">kristinnf13@ru.is</a><br />
-    			</address>
-    			<address>
-    				<strong>Email::</strong> <a href="mailto:sturlah13@ru.is">sturlah13@ru.is</a><br />
-				</address>
-				<div id="imageContainer" class="pull-right">
-					<img id="pidgeonImg" src="http://i.imgur.com/bjEyflW.jpg" alt="The Pidgeon is in Hell!">
-				</div>
+			<div class="well well-lg">
+				<ul class="media-list">
+					<li class="media">
+						<div class="media-body">
+							<h2 class="media-heading" style="margin-bottom: 30px;">About the project development:</h2>
+							<p class="fix-right">We built this project on top of a 'base' provided by the teacher. Both of us used Sublime Text 2 and the whiteboard works on the newest versions of both Google Chrome and Firefox.</p>
+							<h4>What we implemented:</h4>
+							<ul>
+								<li>Rectangle (given)</li>
+								<li>Line</li>
+								<li>Circle</li>
+								<li>Pen</li>
+								<li>Text</li>
+								<li>Undo & Redo (Clear can be undone aswell)</li>
+								<li>Manipulation of properties (besides font type and size)</li>
+							</ul>
+							<p class="fix-right" style="margin-top: 10px;">Google was used quite a lot and making a list of all the websites, tutorials and other material we read through would be impossible. But we'd like to at least point at <a href="http://perfectionkills.com/exploring-canvas-drawing-techniques/" style="color: blue;">this website</a>. The code that we used for the pen was kinda borrowed from there.</p>
+							<h2 class="media-heading" style="margin-top: 40px; margin-bottom: 30px;">Team members:</h2>
+							<strong>Kristinn Heiðar Freysteinsson</strong>
+							<address>
+			    				<strong>Email:</strong> <a href="mailto:kristinnf13@ru.is">kristinnf13@ru.is</a><br />
+			    			</address>
+			    			<strong>Sturla Halldórsson</strong>
+			    			<address>
+			    				<strong>Email:</strong> <a href="mailto:sturlah13@ru.is">sturlah13@ru.is</a><br />
+							</address>
+						</div>
+						<div id="imageContainer" class="media-right">
+							<a href="http://perfectionkills.com/exploring-canvas-drawing-techniques/">
+								<img id="pidgeonImg" src="http://i.imgur.com/bjEyflW.jpg" alt="The Pidgeon is in Hell!">
+							</a>
+						</div>
+					</li>
+				</ul>
 			</div>
 		</div>
 	</div>
