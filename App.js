@@ -79,7 +79,7 @@ function App(canvasSelector) {
 		var shape         = self.shapeFactory();
 		shape.pos         = self.startPos;
 		shape.color       = self.color;
-		shape.fontAndSize = self.fontAndSize;
+		//shape.fontAndSize = self.fontAndSize;
 		shape.theText     = $('#textInput').val();
 
 		if(shape.shouldBeAdded()) {
@@ -175,19 +175,19 @@ function App(canvasSelector) {
 		self.lineCap = lineCap;
 	}
 
-	self.setFont = function(font) {
-		var fontArgs = self.fontAndSize.split(' ');
-		self.fontAndSize = fontArgs[0] + ' ' + font;
-	}
+	// self.setFont = function(font) {
+	// 	var fontArgs = self.fontAndSize.split(' ');
+	// 	self.fontAndSize = fontArgs[0] + ' ' + font;
+	// }
 
-	self.setFontSize = function(size) {
-		var fontArgs = self.fontAndSize.split(' ');
-		self.fontAndSize = size + ' ';
-		for(var i = 1; i < fontArgs.length-1; i++) {
-			self.fontAndSize += fontArgs[i] + ' ';
-		}
-		self.fontAndSize += fontArgs[fontArgs.length-1];
-	}
+	// self.setFontSize = function(size) {
+	// 	var fontArgs = self.fontAndSize.split(' ');
+	// 	self.fontAndSize = size + ' ';
+	// 	for(var i = 1; i < fontArgs.length-1; i++) {
+	// 		self.fontAndSize += fontArgs[i] + ' ';
+	// 	}
+	// 	self.fontAndSize += fontArgs[fontArgs.length-1];
+	// }
 
 	self.resetTextbox = function() {
 		if(self.isTextbox) {
@@ -218,7 +218,7 @@ function App(canvasSelector) {
 		self.lineWidth   = 1;
 		self.lineJoin    = "miter";
 		self.lineCap     = "butt";
-		self.fontAndSize = "20pt Calibri";
+		//self.fontAndSize = "20pt Calibri";
 	}
 	
 	self.init();
@@ -271,6 +271,6 @@ $(function() {
 	$('#color').change(function(){app.setColor($(this).val())});
 	$('#lineJoin').change(function(){app.setLineJoin($(this).val())});
 	$('#lineCap').change(function(){app.setLineCap($(this).val())});
-	$('#fontType').change(function(){app.setFont($(this).val())});
-	$('#fontSize').change(function(){app.setFontSize($(this).val())});
+	//$('#fontType').change(function(){app.setFont($(this).val())});
+	//$('#fontSize').change(function(){app.setFontSize($(this).val())});
 });

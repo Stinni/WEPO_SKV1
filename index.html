@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<title>JavaScript Canvas Whiteboard</title>
 	<style>
-		.myHeader {background-color: #3a5795; color: white; padding: 16px; text-align: center;}
+		#myHeader {background-color: #3a5795; color: white; padding: 16px; text-align: center;}
 		#toolbar {background-color:silver;}
 		#canvas {border:1px solid blue;}
 		#myFooter {position: fixed; bottom: 0; width: 100%; background-color: #3a5795; color: white;}
@@ -22,11 +22,11 @@
 	<script type="text/javascript" src="pen.js"></script>
 	<script type="text/javascript" src="square.js"></script>
 	<script type="text/javascript" src="line.js"></script>
-	<script type="text/javascript" src="circle.js"></script>	
-	<script type="text/javascript" src="textbox.js"></script>	
+	<script type="text/javascript" src="circle.js"></script>
+	<script type="text/javascript" src="textbox.js"></script>
 </head>
 <body>
-	<div class="myHeader">
+	<div id="myHeader">
 		<h2 style="margin-left: 20px;">JavaScript Canvas Whiteboard<small></small></h1>
 	</div>
 	<div id="tabs">
@@ -84,10 +84,10 @@
 						<option value="round">Round</option>
 						<option value="square">Square</option>
 					</select>
-					<label for="fontType">Font:</label>
+					<!-- <label for="fontType">Font:</label>
 					<select id="fontType" class="btn" style="margin-bottom: 10px;">
-						<option value="Calibri" selected>Calibri</option>
-						<option value="Arial">Arial</option>
+						<option value="Arial" selected>Arial</option>
+						<option value="Calibri">Calibri</option>
 						<option value="Times New Roman">Times New Roman</option>
 						<option value="Courier New">Courier New</option>
 						<option value="serif">serif</option>
@@ -108,7 +108,7 @@
 						<option value="52pt">52</option>
 						<option value="56pt">56</option>
 						<option value="60pt">60</option>
-					</select>
+					</select> -->
 				</div>
 				<div class="pull-left" style="margin-right:30px;">
 					<canvas class="centred" id="canvas" height="500" width="700">
@@ -119,14 +119,19 @@
 			</div>
 		</div>
 		<div id="tabs-2">
-			<div class="well well-lg">
-				<h1>TODO: ADD CONTENT!</h1>
+			<div class="well well-lg clearfix">
+				<h2>About the project development:</h2> <br />
+				<p></p>
+				<p></p>
+				<h2>Team members:</h2> <br />
 				<address>
-    				<strong>Support:</strong> <a href="mailto:kristinnf13@ru.is">kristinnf13@ru.is</a><br />
-    				<strong>Support:</strong> <a href="mailto:sturlah13@ru.is">sturlah13@ru.is</a><br />
+    				<strong>Email:</strong> <a href="mailto:kristinnf13@ru.is">kristinnf13@ru.is</a><br />
+    			</address>
+    			<address>
+    				<strong>Email::</strong> <a href="mailto:sturlah13@ru.is">sturlah13@ru.is</a><br />
 				</address>
-				<div id="imageContainer">
-					<img id="pidgeonImg" src="PidgeonInHell.jpg" alt="The Pidgeon is in Hell!">
+				<div id="imageContainer" class="pull-right">
+					<img id="pidgeonImg" src="http://i.imgur.com/bjEyflW.jpg" alt="The Pidgeon is in Hell!">
 				</div>
 			</div>
 		</div>
@@ -134,7 +139,7 @@
 	<div>
 		<div id="myFooter" class="well well-sm">
 			<span class="glyphicon glyphicon-copyright-mark"></span>
-			<span class="h5">Kristinn H. Freysteinsson & Sturla Halldórsson - WEPO 2016</span>
+			<span class="h5">Kristinn H. Freysteinsson & Sturla Halldórsson - Skilaverkefni 1 - WEPO 2016</span>
 		</div>
 	</div>
 </body>
