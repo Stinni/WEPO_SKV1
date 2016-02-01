@@ -39,6 +39,12 @@ var Line = Shape.extend({
 			this.pos.y += this.size.y;
 			this.size.y = Math.abs(this.size.y);
 		}
-	},	
+	},
 
+	shouldBeAdded: function() {
+		if(this.size.x === 0 && this.size.y === 0) {
+			return false;
+		}
+		return true;
+	}
 });

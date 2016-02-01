@@ -10,26 +10,24 @@ function App(canvasSelector) {
 		// first shape drawn is in the wrong place (which hasn't happened yet) it's easy to just clear the
 		// canvas and start again.
 		self.canvasOffset = new Point(self.canvas.offset().left, self.canvas.offset().top);
-		var startPos      = self.getEventPoint(e);
+		self.startPos     = self.getEventPoint(e);
 		var shape         = self.shapeFactory();
-		shape.pos         = startPos;
+		shape.pos         = self.startPos;
 		shape.color       = self.color;
 		shape.lineWidth   = self.lineWidth;
 		shape.lineJoin    = self.lineJoin;
 		shape.lineCap     = self.lineCap;
 
-		shape.startDrawing(startPos,self.canvasContext);
-		startPos.log('drawing start');
+		shape.startDrawing(self.startPos,self.canvasContext);
+		self.startPos.log('drawing start');
 
 		var drawing = function(e) {
-			if(!self.isTextbox) {
-				var pos = self.getEventPoint(e);
-				
-				shape.drawing(pos,self.canvasContext);
+			var pos = self.getEventPoint(e);
+			
+			shape.drawing(pos,self.canvasContext);
 
-				self.redraw();
-				shape.draw(self.canvasContext);
-			}
+			self.redraw();
+			shape.draw(self.canvasContext);
 		}
 
 		var drawingStop = function(e) {
@@ -61,26 +59,27 @@ function App(canvasSelector) {
 
 	self.mousedown = function(e) {
 		if(self.isTextbox) {
-			var x = pos.x + $("#canvas").position().left;
-			var y = pos.y + $("#canvas").position().top;
+			e.preventDefault();
+			self.canvasOffset = new Point(self.canvas.offset().left, self.canvas.offset().top);
+			self.startPos = self.getEventPoint(e);
+			var x = self.startPos.x + $("#canvas").position().left;
+			var y = self.startPos.y + $("#canvas").position().top;
 			var textBox = document.getElementById("textInput");
 			textBox.style.display = 'flex';
-			$('#textInput').css({position:'absolute', 'left': x, 'top': y}).focus();
+			$('#textInput').css({position:'absolute', 'left': x, 'top': y}).show().focus();
 		}
 		else if(self.shapeFactory != null) {
 			self.drawingStart(e);
-		}//textAreaContainer"></div> <textarea id="textInput" hidden></textarea>
+		}
 
 		self.redraw();
 	}
 
 	self.saveTextInput = function() {
-		self.canvasOffset = new Point(self.canvas.offset().left, self.canvas.offset().top);
-		var startPos      = self.getEventPoint(e);
 		var shape         = self.shapeFactory();
-		shape.pos         = startPos;
+		shape.pos         = self.startPos;
 		shape.color       = self.color;
-		shape.font        = self.font;
+		shape.fontAndSize = self.fontAndSize;
 		shape.theText     = $('#textInput').val();
 
 		if(shape.shouldBeAdded()) {
@@ -88,10 +87,10 @@ function App(canvasSelector) {
 			self.shapesUndone = [];
 			self.wasCleared = 0;
 			shape.added(self.canvasContext);
-		}
 
-		shape.startDrawing(startPos,self.canvasContext);
-		startPos.log('drawing start');
+			shape.startDrawing(self.startPos,self.canvasContext);
+			self.startPos.log('drawing start');
+		}
 
 		self.redraw();
 	}
@@ -115,6 +114,12 @@ function App(canvasSelector) {
 				self.shapesUndone.push(self.shapes.pop());
 			}
 		}
+
+		if(self.isTextbox) {
+			self.resetTextbox();
+			self.isTextbox = true;
+		}
+
 		self.redraw();
 	}
 	
@@ -130,6 +135,11 @@ function App(canvasSelector) {
 			self.shapesUndone.push(self.shapes.pop());
 			self.redraw();
 		}
+
+		if(self.isTextbox) {
+			self.resetTextbox();
+			self.isTextbox = true;
+		}
 	}
 
 	self.redo = function() {
@@ -141,6 +151,11 @@ function App(canvasSelector) {
 		else if(self.shapesUndone.length > 0) {
 			self.shapes.push(self.shapesUndone.pop());
 			self.redraw();
+		}
+
+		if(self.isTextbox) {
+			self.resetTextbox();
+			self.isTextbox = true;
 		}
 	}
 
@@ -161,13 +176,24 @@ function App(canvasSelector) {
 	}
 
 	self.setFont = function(font) {
-		var fontArgs = self.font.split(' ');
-		self.font = fontArgs[0] + ' ' + font;
+		var fontArgs = self.fontAndSize.split(' ');
+		self.fontAndSize = fontArgs[0] + ' ' + font;
 	}
 
-	self.setTextSize = function(size) {
-		var fontArgs = self.font.split(' ');
-		self.font = size + ' ' + fontArgs[1];
+	self.setFontSize = function(size) {
+		var fontArgs = self.fontAndSize.split(' ');
+		self.fontAndSize = size + ' ';
+		for(var i = 1; i < fontArgs.length-1; i++) {
+			self.fontAndSize += fontArgs[i] + ' ';
+		}
+		self.fontAndSize += fontArgs[fontArgs.length-1];
+	}
+
+	self.resetTextbox = function() {
+		if(self.isTextbox) {
+			$('#textInput').hide().val("");
+			app.isTextbox = false;
+		}
 	}
 
 	self.init = function() {
@@ -181,17 +207,18 @@ function App(canvasSelector) {
 			return new Pen();
 		}
 		self.canvasContext = canvas.getContext("2d");
-		self.shapes = [];
-		self.shapesUndone = [];
-		self.wasCleared = 0;
-		self.isTextbox = false;
+		self.startPos      = null;
+		self.shapes        = [];
+		self.shapesUndone  = [];
+		self.wasCleared    = 0;
+		self.isTextbox     = false;
 		
 		// Set defaults
-		self.color     = '#000000';
-		self.lineWidth = 1;
-		self.lineJoin  = "miter";
-		self.lineCap   = "butt";
-		self.font      = '12pt Calibri';
+		self.color       = '#000000';
+		self.lineWidth   = 1;
+		self.lineJoin    = "miter";
+		self.lineCap     = "butt";
+		self.fontAndSize = "20pt Calibri";
 	}
 	
 	self.init();
@@ -203,28 +230,39 @@ $(function() {
 	app = new App('#canvas');
 	$( "#tabs" ).tabs();
 	$('#penbutton').click(function(){app.shapeFactory = function() {
-		return new Pen();
-		app.isTextbox = false;
-	};});
+		return new Pen();};
+		app.resetTextbox();
+	});
 	$('#squarebutton').click(function(){app.shapeFactory = function() {
-		return new Square();
-		app.isTextbox = false;
-	};});
+		return new Square();};
+		app.resetTextbox();
+	});
 	$('#linebutton').click(function(){app.shapeFactory = function() {
-		return new Line();
-		app.isTextbox = false;
-	};});
+		return new Line();};
+		app.resetTextbox();
+	});
 	$('#circlebutton').click(function(){app.shapeFactory = function() {
-		return new Circle();
-		app.isTextbox = false;
-	};});
+		return new Circle();};
+		app.resetTextbox();
+	});
 	$('#textbutton').click(function(){app.shapeFactory = function() {
 		return new TextBox();};
 		app.isTextbox = true;
 	});
-	$('#textInput').onfocusout(function(){
-		app.saveTextInput();
-		$('#textInput').hide().clear();
+	$('#textInput').on({
+		keydown: function(e) {
+			if(e.keyCode === 13) {
+		 		app.saveTextInput();
+		 		app.resetTextbox();
+		 		app.isTextbox = true;
+			}
+			else if(e.keyCode === 27) {
+				$('#textInput').hide();
+			}
+		},
+		focusout: function() {
+			$('#textInput').hide();
+		}
 	});
 	$('#clearbutton').click(function(){app.clearCanvas()});
 	$('#undobutton').click(function(){app.undo()});
@@ -233,4 +271,6 @@ $(function() {
 	$('#color').change(function(){app.setColor($(this).val())});
 	$('#lineJoin').change(function(){app.setLineJoin($(this).val())});
 	$('#lineCap').change(function(){app.setLineCap($(this).val())});
+	$('#fontType').change(function(){app.setFont($(this).val())});
+	$('#fontSize').change(function(){app.setFontSize($(this).val())});
 });

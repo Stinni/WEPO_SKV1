@@ -2,10 +2,12 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>JS-Draw</title>
+	<title>JavaScript Canvas Whiteboard</title>
 	<style>
+		.myHeader {background-color: #3a5795; color: white; padding: 16px; text-align: center;}
 		#toolbar {background-color:silver;}
 		#canvas {border:1px solid blue;}
+		#myFooter {position: fixed; bottom: 0; width: 100%; background-color: #3a5795; color: white;}
 	</style>
 	<!-- JQuery -->
 	<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
@@ -24,12 +26,12 @@
 	<script type="text/javascript" src="textbox.js"></script>	
 </head>
 <body>
-	<div class="page-header">
-		<h1>JS-Draw -- TODO: FIX LOOK AND MAYBE FIND A NAME!<small hidden>Subtext for header</small></h1>
+	<div class="myHeader">
+		<h2 style="margin-left: 20px;">JavaScript Canvas Whiteboard<small></small></h1>
 	</div>
 	<div id="tabs">
 		<ul>
-			<li><a href="#tabs-1">Drawing(s)</a></li>
+			<li><a href="#tabs-1">Drawing</a></li>
 			<li><a href="#tabs-2">About</a></li>
 		</ul>
 		<div id="tabs-1">
@@ -82,24 +84,55 @@
 						<option value="round">Round</option>
 						<option value="square">Square</option>
 					</select>
+					<label for="fontType">Font:</label>
+					<select id="fontType" class="btn" style="margin-bottom: 10px;">
+						<option value="Calibri" selected>Calibri</option>
+						<option value="Arial">Arial</option>
+						<option value="Times New Roman">Times New Roman</option>
+						<option value="Courier New">Courier New</option>
+						<option value="serif">serif</option>
+						<option value="sans-serif">sans-serif</option>
+					</select>
+					<label for="fontSize">Font Size:</label>
+					<select id="fontSize" class="btn" style="margin-bottom: 10px;">
+						<option value="12pt">12</option>
+						<option value="16pt">16</option>
+						<option value="20pt" selected>20</option>
+						<option value="24pt">24</option>
+						<option value="28pt">28</option>
+						<option value="32pt">32</option>
+						<option value="36pt">36</option>
+						<option value="40pt">40</option>
+						<option value="44pt">44</option>
+						<option value="48pt">48</option>
+						<option value="52pt">52</option>
+						<option value="56pt">56</option>
+						<option value="60pt">60</option>
+					</select>
 				</div>
 				<div class="pull-left" style="margin-right:30px;">
 					<canvas class="centred" id="canvas" height="500" width="700">
-						<p>Unfortunately, your browser is currently unsupported by our web application. We are sorry for the inconvenience.</p>
+						<p>Unfortunately, your browser is currently unsupported by our web application. We're sorry for the inconvenience.</p>
 					</canvas>
+					<textarea id="textInput" hidden></textarea>
 				</div>
-				<div id="textAreaContainer"></div>
 			</div>
 		</div>
 		<div id="tabs-2">
 			<div class="well well-lg">
 				<h1>TODO: ADD CONTENT!</h1>
-				<img src="PidgeonInHell.jpg" alt="The Pidgeon is in Hell!">
+				<address>
+    				<strong>Support:</strong> <a href="mailto:kristinnf13@ru.is">kristinnf13@ru.is</a><br />
+    				<strong>Support:</strong> <a href="mailto:sturlah13@ru.is">sturlah13@ru.is</a><br />
+				</address>
+				<div id="imageContainer">
+					<img id="pidgeonImg" src="PidgeonInHell.jpg" alt="The Pidgeon is in Hell!">
+				</div>
 			</div>
 		</div>
 	</div>
 	<div>
-		<div class="well well-sm">
+		<div id="myFooter" class="well well-sm">
 			<span class="glyphicon glyphicon-copyright-mark"></span>
 			<span class="h5">Kristinn H. Freysteinsson & Sturla Halldórsson - WEPO 2016</span>
 		</div>
