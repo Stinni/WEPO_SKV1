@@ -20,6 +20,8 @@ var Circle = Shape.extend({
 	},
 
 	drawing:function(point) {
+		this.size.x = point.x;
+		this.size.y = point.y;
 		this.center.x = Math.abs((this.pos.x + point.x)/2);
 		this.center.y = Math.abs((this.pos.y + point.y)/2);
 		var rx = Math.abs(this.center.x - point.x);
@@ -27,15 +29,10 @@ var Circle = Shape.extend({
 		this.radius = rx > ry ? rx : ry;
 	},
 
-	added: function(canvas) {
-		if(this.size.x < 0) {
-			this.pos.x += this.size.x;
-			this.size.x = Math.abs(this.size.x);
+	shouldBeAdded: function(canvas) {
+		if(this.size.x === this.center.x && this.size.y === this.center.y) {
+			return false;
 		}
-
-		if(this.size.y < 0) {
-			this.pos.y += this.size.y;
-			this.size.y = Math.abs(this.size.y);
-		}
+		return true;
 	}
 });
